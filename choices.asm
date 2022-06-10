@@ -1,21 +1,12 @@
     .ORIG x3100
     BRnzp start
- 
-
-
-
-
-
-
-
     
-
 start
 
 
 House
     .STRINGZ "Type 1 for front, or 2 for back"
-    LD R0, House
+    LEA R0, House
     PUTS
     
     GetC
@@ -27,43 +18,44 @@ House
 Front
     .STRINGZ "You go to open the front door, on the other side you find..." 
 Frontdoor
-    LD R0, Front
+    LEA R0, Front
     PUTS
 Back
-    .STRINGZ "You go out the back door, roll a stealth check (Google d20, roll the dice, input the value)"
+    .STRINGZ "You go out the back door, roll a stealth check (Google d10, roll the dice, input the value)"
 Backdoor
-    LD R0, Back
+    LEA R0, Back
     PUTS
 
     GetC
     ADD R0, R0, R5 ; Convert ASCII to int
     ADD R2, R0, #0 ; Move value to R2
-    ADD R2, R2, #-5 ; Decrement R2 by 5
+    ADD R2, R2, #-2 ; Decrement R2 by 2
+    ADD R0, R2, #0 ; Move back to R0
     BRnz Foldfail
-    ADD R2, R2, #-5 ; Decrement R2 by 5
+    ADD R2, R2, #-2 ; Decrement R2 by 2
     BRnz Notterrible
-    ADD R2, R2, #-5 ; Decrement again
+    ADD R2, R2, #-2 ; Decrement again
     BRnzp next
 Fold
     .STRINGZ "When you go to open the door you trip on the chair leg, hit the door with your \nface, and the door falls off of its hinges and slams to the ground. You take 5 damage."
 Foldfail
-    LD R0, Fold
+    LEA R0, Fold
     PUTS
-    ADD R4, R4, #-5
+    ADD R4, R4, #-2
     ADD R4, R4, R6
 Notbad
     .STRINGZ "You go to open the back door but you fumble the door and it swings open loudly"
 Notterrible
-    LD R0, Notbad
+    LEA R0, Notbad
     PUTS
 next
     BRnz Almost
-    ADD R2, R2, #-3 ; Mild decrement
+    ADD R2, R2, #-2 ; decrement
     BRnzp next2
 Almostgotit
     .STRINGZ "You open the door quietly, and you attempt to walk away but you are seen."    
 Almost
-    LD R0, Almostgotit
+    LEA R0, Almostgotit
     PUTS
 next2
     BRnz Success
@@ -71,12 +63,12 @@ next2
 Successful
     .STRINGZ "You manage to open the door quietly and you escape."
 Success
-    LD R0, Successful
+    LEA R0, Successful
     PUTS
 Crit
     .STRINGZ "You are so stealthy when you leave you managed to make your bed, and clean up without being heard, made\nit look like no one has been there for a long time."
 CritSuccess
-    LD R0, Crit
+    LEA R0, Crit
     PUTS
     RET
     LD R6, ASCII
