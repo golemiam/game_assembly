@@ -1,11 +1,14 @@
     .ORIG x3100
     BRnzp start
-    
+    LD R6, ASCII
+    LD R5, NEGASCII
+ASCII   .FILL x30 ; Convert to ASCII
+NEGASCII .FILL xFFD0 ; Negate the ASCII    
 start
 
 
 House
-    .STRINGZ "Type 1 for front, or 2 for back"
+    .STRINGZ "Type 1 for front, or 2 for back\n"
     LEA R0, House
     PUTS
     
@@ -16,12 +19,12 @@ House
     BRz Frontdoor
     BRp Backdoor
 Front
-    .STRINGZ "You go to open the front door, on the other side you find..." 
+    .STRINGZ "You go to open the front door, on the other side you find...\n" 
 Frontdoor
     LEA R0, Front
     PUTS
 Back
-    .STRINGZ "You go out the back door, roll a stealth check (Google d10, roll the dice, input the value)"
+    .STRINGZ "You go out the back door, roll a stealth check (Google d10, roll the dice, input the value as 0-9)\n"
 Backdoor
     LEA R0, Back
     PUTS
@@ -37,14 +40,14 @@ Backdoor
     ADD R2, R2, #-2 ; Decrement again
     BRnzp next
 Fold
-    .STRINGZ "When you go to open the door you trip on the chair leg, hit the door with your \nface, and the door falls off of its hinges and slams to the ground. You take 5 damage."
+    .STRINGZ "When you go to open the door you trip on the chair leg, hit the door with your \nface, and the door falls off of its hinges and slams to the ground. You take 5 damage.\n"
 Foldfail
     LEA R0, Fold
     PUTS
     ADD R4, R4, #-2
     ADD R4, R4, R6
 Notbad
-    .STRINGZ "You go to open the back door but you fumble the door and it swings open loudly"
+    .STRINGZ "You go to open the back door but you fumble the door and it swings open loudly\n"
 Notterrible
     LEA R0, Notbad
     PUTS
@@ -53,7 +56,7 @@ next
     ADD R2, R2, #-2 ; decrement
     BRnzp next2
 Almostgotit
-    .STRINGZ "You open the door quietly, and you attempt to walk away but you are seen."    
+    .STRINGZ "You open the door quietly, and you attempt to walk away but you are seen.\n"    
 Almost
     LEA R0, Almostgotit
     PUTS
@@ -61,18 +64,15 @@ next2
     BRnz Success
     BRp CritSuccess
 Successful
-    .STRINGZ "You manage to open the door quietly and you escape."
+    .STRINGZ "You manage to open the door quietly and you escape.\n"
 Success
     LEA R0, Successful
     PUTS
 Crit
-    .STRINGZ "You are so stealthy when you leave you managed to make your bed, and clean up without being heard, made\nit look like no one has been there for a long time."
+    .STRINGZ "You are so stealthy when you leave you managed to make your bed, and clean up without being heard, made\nit look like no one has been there for a long time.\n"
 CritSuccess
     LEA R0, Crit
     PUTS
     RET
-    LD R6, ASCII
-    LD R5, NEGASCII
-ASCII   .FILL x30 ; Convert to ASCII
-NEGASCII .FILL xFFD0 ; Negate the ASCII
+
     .END
